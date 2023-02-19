@@ -3,8 +3,7 @@ use strum_macros::EnumString;
 
 #[derive(Debug, PartialEq, EnumString)]
 pub enum FileSections {
-    #[strum(default)]
-    None(String),
+    None,
     Format,
     General,
     Editor,
@@ -17,8 +16,11 @@ pub enum FileSections {
 }
 
 pub fn get_section(line: &str) -> FileSections {
-    let trimmed_line = line.trim_start_matches('[').trim_end_matches(']');
-    FileSections::from_str(trimmed_line).unwrap()
+    let trimmed_line = line.trim().trim_start_matches('[').trim_end_matches(']');
+    match FileSections::from_str(trimmed_line) {
+        Ok(t) => t,
+        Err(_) => FileSections::None,
+    }
 }
 
 #[cfg(test)]
@@ -34,9 +36,6 @@ mod tests {
     #[test]
     fn test_parse_fail() {
         let test_str = "[Garbage]";
-        assert_eq!(
-            get_section(test_str),
-            FileSections::None("Garbage".to_string())
-        );
+        assert_eq!(get_section(test_str), FileSections::None);
     }
 }

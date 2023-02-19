@@ -91,11 +91,11 @@ impl Beatmap {
 
 pub fn parse(text: &str) -> Beatmap {
     let mut beatmap = Beatmap::new();
-    let mut current_section = FileSections::Format;
+    let mut current_section = FileSections::None;
 
     for line in text.lines() {
-        if line.trim().is_empty() && !line.starts_with("//") {
-            if get_section(line) != FileSections::None(line.to_string()) {
+        if !line.trim().is_empty() && !line.starts_with("//") {
+            if get_section(line) != FileSections::None {
                 current_section = get_section(line);
             } else {
                 match current_section {
