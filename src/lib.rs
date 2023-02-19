@@ -250,4 +250,40 @@ mod tests {
             }
         );
     }
+
+    #[test]
+    fn test_parse() {
+        let test_str = "[General]
+            AudioFilename: audio.mp3
+            AudioLeadIn: 0
+            AudioHash: afjskldfjaldksfjklasf
+            PreviewTime: 10
+            Countdown: 0
+            SampleSet: Drum
+            StackLeniency: 0.75
+            Mode: 1
+            LetterboxInBreaks: 1
+            StoryFireInFront: 0
+            UseSkinSprites: 1
+            AlwaysShowPlayfield: 1
+            OverlayPosition: Below
+            SkinPreference: Seoul v10
+            EpilepsyWarning: 1
+            CountdownOffset: 1
+            SpecialStyle: 1
+            WidescreenStoryboard: 1
+            SamplesMatchPlaybackRate: 1
+
+            [Difficulty]
+            HPDrainRate:6.0
+            CircleSize:4.2
+            OverallDifficulty:8.5
+            ApproachRate:9.8
+            SliderMultiplier:1.4
+            SliderTickRate:2.0";
+        let beatmap = parse(test_str);
+
+        assert_eq!(beatmap.general.audio_filename, String::from("audio.mp3"));
+        assert_eq!(beatmap.difficulty.cs, 4.2);
+    }
 }
