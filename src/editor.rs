@@ -22,7 +22,7 @@ impl Editor {
 }
 
 pub fn parse_editor(line: &str, beatmap: &mut Beatmap) {
-    let (k, v) = line.split_once(':').unwrap();
+    let (k, v) = line.trim().split_once(':').unwrap();
     match k.trim() {
         "Bookmarks" => {
             beatmap.editor.bookmarks = v
@@ -42,7 +42,7 @@ pub fn parse_editor(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, General};
+    use crate::{Difficulty, General, Metadata};
 
     #[test]
     fn test_parse_editor() {
@@ -66,6 +66,7 @@ mod tests {
                     grid_size: 32,
                     timeline_zoom: 3.2,
                 },
+                metadata: Metadata::new(),
                 difficulty: Difficulty::new(),
             }
         )

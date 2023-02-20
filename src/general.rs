@@ -159,7 +159,7 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, Editor};
+    use crate::{Difficulty, Editor, Metadata};
 
     #[test]
     fn test_parse_general() {
@@ -212,6 +212,7 @@ mod tests {
                     samples_match_playback_rate: true,
                 },
                 editor: Editor::new(),
+                metadata: Metadata::new(),
                 difficulty: Difficulty::new(),
             }
         );

@@ -3,17 +3,20 @@ use crate::{
     editor::{parse_editor, Editor},
     file_sections::{get_section, FileSections},
     general::{parse_general, General},
+    metadata::{parse_metadata, Metadata},
 };
 
 mod difficulty;
 mod editor;
 mod file_sections;
 mod general;
+mod metadata;
 
 #[derive(Debug, PartialEq)]
 pub struct Beatmap {
     pub general: General,
     pub editor: Editor,
+    pub metadata: Metadata,
     pub difficulty: Difficulty,
 }
 
@@ -22,6 +25,7 @@ impl Beatmap {
         Beatmap {
             general: General::new(),
             editor: Editor::new(),
+            metadata: Metadata::new(),
             difficulty: Difficulty::new(),
         }
     }
@@ -40,6 +44,7 @@ pub fn parse(text: &str) -> Beatmap {
                     FileSections::General => parse_general(line, &mut beatmap),
                     FileSections::Editor => parse_editor(line, &mut beatmap),
                     FileSections::Difficulty => parse_difficulty(line, &mut beatmap),
+                    FileSections::Metadata => parse_metadata(line, &mut beatmap),
                     _ => todo!(),
                 }
             }
@@ -82,6 +87,18 @@ mod tests {
             GridSize: 32
             TimelineZoom: 3.2
 
+            [Metadata]
+            Title:End Time
+            TitleUnicode:End Time
+            Artist:Cres
+            ArtistUnicode:Cres
+            Creator:PaRaDogi
+            Version:Dogi
+            Source:
+            Tags:DeviousPanda
+            BeatmapID:2797865
+            BeatmapSetID:1351450
+
             [Difficulty]
             HPDrainRate:6.0
             CircleSize:4.2
@@ -93,6 +110,7 @@ mod tests {
 
         assert_eq!(beatmap.general.audio_filename, String::from("audio.mp3"));
         assert_eq!(beatmap.difficulty.cs, 4.2);
+        assert_eq!(beatmap.metadata.title, String::from("End Time"));
         assert_eq!(beatmap.editor.beat_divisor, 4);
         assert_eq!(beatmap.editor.bookmarks, Vec::new());
     }
