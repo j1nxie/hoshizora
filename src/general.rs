@@ -60,6 +60,13 @@ impl FromStr for Mode {
     }
 }
 
+#[derive(Debug, PartialEq, EnumString)]
+pub enum OverlayPosition {
+    NoChange,
+    Below,
+    Above,
+}
+
 #[derive(Debug, PartialEq)]
 pub struct General {
     pub audio_filename: String,
@@ -74,7 +81,7 @@ pub struct General {
     pub story_fire_in_front: bool,
     pub use_skin_sprites: bool,
     pub always_show_playfield: bool,
-    pub overlay_position: String, // TODO: this probably should be an enum
+    pub overlay_position: OverlayPosition,
     pub skin_preference: String,
     pub epilepsy_warning: bool,
     pub countdown_offset: u32,
@@ -98,7 +105,7 @@ impl General {
             story_fire_in_front: true,
             use_skin_sprites: false,
             always_show_playfield: false,
-            overlay_position: String::from("NoChange"),
+            overlay_position: OverlayPosition::NoChange,
             skin_preference: String::new(),
             epilepsy_warning: false,
             countdown_offset: 0,
@@ -130,7 +137,9 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
         "AlwaysShowPlayfield" => {
             beatmap.general.always_show_playfield = v.trim().parse::<u8>().unwrap() != 0
         }
-        "OverlayPosition" => beatmap.general.overlay_position = String::from(v.trim()),
+        "OverlayPosition" => {
+            beatmap.general.overlay_position = OverlayPosition::from_str(v.trim()).unwrap()
+        }
         "SkinPreference" => beatmap.general.skin_preference = String::from(v.trim()),
         "EpilepsyWarning" => {
             beatmap.general.epilepsy_warning = v.trim().parse::<u8>().unwrap() != 0
@@ -194,7 +203,7 @@ mod tests {
                     story_fire_in_front: false,
                     use_skin_sprites: true,
                     always_show_playfield: true,
-                    overlay_position: String::from("Below"),
+                    overlay_position: OverlayPosition::Below,
                     skin_preference: String::from("Seoul v10"),
                     epilepsy_warning: true,
                     countdown_offset: 1,
