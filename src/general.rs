@@ -1,4 +1,71 @@
 use crate::Beatmap;
+use std::str::FromStr;
+use strum::ParseError::VariantNotFound;
+use strum_macros::EnumString;
+
+#[derive(Debug, PartialEq)]
+pub enum Countdown {
+    None,
+    Normal,
+    Half,
+    Double,
+}
+
+impl FromStr for Countdown {
+    type Err = strum::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().parse::<i32>() {
+            Ok(t) => match t {
+                0 => Ok(Countdown::None),
+                1 => Ok(Countdown::Normal),
+                2 => Ok(Countdown::Half),
+                3 => Ok(Countdown::Double),
+                _ => Err(VariantNotFound),
+            },
+            Err(_) => Err(VariantNotFound),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, EnumString)]
+pub enum SampleSet {
+    Normal,
+    Soft,
+    Drum,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Mode {
+    Osu,
+    Taiko,
+    Catch,
+    Mania,
+}
+
+impl FromStr for Mode {
+    type Err = strum::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().parse::<i32>() {
+            Ok(t) => match t {
+                0 => Ok(Mode::Osu),
+                1 => Ok(Mode::Taiko),
+                2 => Ok(Mode::Catch),
+                3 => Ok(Mode::Mania),
+                _ => Err(VariantNotFound),
+            },
+            Err(_) => Err(VariantNotFound),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, EnumString)]
+pub enum OverlayPosition {
+    NoChange,
+    Below,
+    Above,
+}
 
 #[derive(Debug, PartialEq)]
 pub struct General {
@@ -6,15 +73,15 @@ pub struct General {
     pub audio_lead_in: u32,
     pub audio_hash: String,
     pub preview_time: i32,
-    pub countdown: u32,     // TODO: this should be an enum
-    pub sample_set: String, // TODO: this should also be an enum
+    pub countdown: Countdown,
+    pub sample_set: SampleSet,
     pub stack_leniency: f32,
-    pub mode: u32, // TODO: think about whether this should be an enum
+    pub mode: Mode,
     pub letterbox_in_breaks: bool,
     pub story_fire_in_front: bool,
     pub use_skin_sprites: bool,
     pub always_show_playfield: bool,
-    pub overlay_position: String, // TODO: this probably should be an enum
+    pub overlay_position: OverlayPosition,
     pub skin_preference: String,
     pub epilepsy_warning: bool,
     pub countdown_offset: u32,
@@ -30,15 +97,15 @@ impl General {
             audio_lead_in: 0,
             audio_hash: String::new(),
             preview_time: -1,
-            countdown: 1,
-            sample_set: String::from("Normal"),
+            countdown: Countdown::Normal,
+            sample_set: SampleSet::Normal,
             stack_leniency: 0.7,
-            mode: 0,
+            mode: Mode::Osu,
             letterbox_in_breaks: false,
             story_fire_in_front: true,
             use_skin_sprites: false,
             always_show_playfield: false,
-            overlay_position: String::from("NoChange"),
+            overlay_position: OverlayPosition::NoChange,
             skin_preference: String::new(),
             epilepsy_warning: false,
             countdown_offset: 0,
@@ -56,10 +123,10 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
         "AudioLeadIn" => beatmap.general.audio_lead_in = v.trim().parse::<u32>().unwrap(),
         "AudioHash" => beatmap.general.audio_hash = String::from(v.trim()),
         "PreviewTime" => beatmap.general.preview_time = v.trim().parse::<i32>().unwrap(),
-        "Countdown" => beatmap.general.countdown = v.trim().parse::<u32>().unwrap(),
-        "SampleSet" => beatmap.general.sample_set = String::from(v.trim()),
+        "Countdown" => beatmap.general.countdown = Countdown::from_str(v.trim()).unwrap(),
+        "SampleSet" => beatmap.general.sample_set = SampleSet::from_str(v.trim()).unwrap(),
         "StackLeniency" => beatmap.general.stack_leniency = v.trim().parse::<f32>().unwrap(),
-        "Mode" => beatmap.general.mode = v.trim().parse::<u32>().unwrap(),
+        "Mode" => beatmap.general.mode = Mode::from_str(v.trim()).unwrap(),
         "LetterboxInBreaks" => {
             beatmap.general.letterbox_in_breaks = v.trim().parse::<u8>().unwrap() != 0
         }
@@ -70,7 +137,9 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
         "AlwaysShowPlayfield" => {
             beatmap.general.always_show_playfield = v.trim().parse::<u8>().unwrap() != 0
         }
-        "OverlayPosition" => beatmap.general.overlay_position = String::from(v.trim()),
+        "OverlayPosition" => {
+            beatmap.general.overlay_position = OverlayPosition::from_str(v.trim()).unwrap()
+        }
         "SkinPreference" => beatmap.general.skin_preference = String::from(v.trim()),
         "EpilepsyWarning" => {
             beatmap.general.epilepsy_warning = v.trim().parse::<u8>().unwrap() != 0
@@ -126,15 +195,15 @@ mod tests {
                     audio_lead_in: 0,
                     audio_hash: String::from("afjskldfjaldksfjklasf"),
                     preview_time: 10,
-                    countdown: 0,
-                    sample_set: String::from("Drum"),
+                    countdown: Countdown::None,
+                    sample_set: SampleSet::Drum,
                     stack_leniency: 0.75,
-                    mode: 1,
+                    mode: Mode::Taiko,
                     letterbox_in_breaks: true,
                     story_fire_in_front: false,
                     use_skin_sprites: true,
                     always_show_playfield: true,
-                    overlay_position: String::from("Below"),
+                    overlay_position: OverlayPosition::Below,
                     skin_preference: String::from("Seoul v10"),
                     epilepsy_warning: true,
                     countdown_offset: 1,
