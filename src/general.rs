@@ -1,4 +1,31 @@
 use crate::Beatmap;
+use std::str::FromStr;
+use strum::ParseError::VariantNotFound;
+
+#[derive(Debug, PartialEq)]
+pub enum Countdown {
+    None,
+    Normal,
+    Half,
+    Double,
+}
+
+impl FromStr for Countdown {
+    type Err = strum::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().parse::<i32>() {
+            Ok(t) => match t {
+                0 => Ok(Countdown::None),
+                1 => Ok(Countdown::Normal),
+                2 => Ok(Countdown::Half),
+                3 => Ok(Countdown::Double),
+                _ => Err(VariantNotFound),
+            },
+            Err(_) => Err(VariantNotFound),
+        }
+    }
+}
 
 #[derive(Debug, PartialEq)]
 pub struct General {
@@ -6,7 +33,7 @@ pub struct General {
     pub audio_lead_in: u32,
     pub audio_hash: String,
     pub preview_time: i32,
-    pub countdown: u32,     // TODO: this should be an enum
+    pub countdown: Countdown,
     pub sample_set: String, // TODO: this should also be an enum
     pub stack_leniency: f32,
     pub mode: u32, // TODO: think about whether this should be an enum
@@ -30,7 +57,7 @@ impl General {
             audio_lead_in: 0,
             audio_hash: String::new(),
             preview_time: -1,
-            countdown: 1,
+            countdown: Countdown::Normal,
             sample_set: String::from("Normal"),
             stack_leniency: 0.7,
             mode: 0,
@@ -56,7 +83,7 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
         "AudioLeadIn" => beatmap.general.audio_lead_in = v.trim().parse::<u32>().unwrap(),
         "AudioHash" => beatmap.general.audio_hash = String::from(v.trim()),
         "PreviewTime" => beatmap.general.preview_time = v.trim().parse::<i32>().unwrap(),
-        "Countdown" => beatmap.general.countdown = v.trim().parse::<u32>().unwrap(),
+        "Countdown" => beatmap.general.countdown = Countdown::from_str(v.trim()).unwrap(),
         "SampleSet" => beatmap.general.sample_set = String::from(v.trim()),
         "StackLeniency" => beatmap.general.stack_leniency = v.trim().parse::<f32>().unwrap(),
         "Mode" => beatmap.general.mode = v.trim().parse::<u32>().unwrap(),
@@ -126,7 +153,7 @@ mod tests {
                     audio_lead_in: 0,
                     audio_hash: String::from("afjskldfjaldksfjklasf"),
                     preview_time: 10,
-                    countdown: 0,
+                    countdown: Countdown::None,
                     sample_set: String::from("Drum"),
                     stack_leniency: 0.75,
                     mode: 1,
