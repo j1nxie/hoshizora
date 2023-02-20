@@ -87,6 +87,18 @@ mod tests {
             GridSize: 32
             TimelineZoom: 3.2
 
+            [Metadata]
+            Title:End Time
+            TitleUnicode:End Time
+            Artist:Cres
+            ArtistUnicode:Cres
+            Creator:PaRaDogi
+            Version:Dogi
+            Source:
+            Tags:DeviousPanda
+            BeatmapID:2797865
+            BeatmapSetID:1351450
+
             [Difficulty]
             HPDrainRate:6.0
             CircleSize:4.2
@@ -98,6 +110,7 @@ mod tests {
 
         assert_eq!(beatmap.general.audio_filename, String::from("audio.mp3"));
         assert_eq!(beatmap.difficulty.cs, 4.2);
+        assert_eq!(beatmap.metadata.title, String::from("End Time"));
         assert_eq!(beatmap.editor.beat_divisor, 4);
         assert_eq!(beatmap.editor.bookmarks, Vec::new());
     }
