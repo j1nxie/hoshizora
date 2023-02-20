@@ -76,6 +76,12 @@ mod tests {
             WidescreenStoryboard: 1
             SamplesMatchPlaybackRate: 1
 
+            [Editor]
+            DistanceSpacing: 0.8
+            BeatDivisor: 4
+            GridSize: 32
+            TimelineZoom: 3.2
+
             [Difficulty]
             HPDrainRate:6.0
             CircleSize:4.2
@@ -87,5 +93,7 @@ mod tests {
 
         assert_eq!(beatmap.general.audio_filename, String::from("audio.mp3"));
         assert_eq!(beatmap.difficulty.cs, 4.2);
+        assert_eq!(beatmap.editor.beat_divisor, 4);
+        assert_eq!(beatmap.editor.bookmarks, Vec::new());
     }
 }
