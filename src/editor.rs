@@ -39,3 +39,35 @@ pub fn parse_editor(line: &str, beatmap: &mut Beatmap) {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{Difficulty, General};
+
+    #[test]
+    fn test_parse_editor() {
+        let test_str = "DistanceSpacing: 0.8
+        BeatDivisor: 4
+        GridSize: 32
+        TimelineZoom: 3.2";
+        let mut beatmap = Beatmap::new();
+        for line in test_str.lines() {
+            parse_editor(line, &mut beatmap);
+        }
+
+        assert_eq!(
+            beatmap,
+            Beatmap {
+                general: General::new(),
+                editor: Editor {
+                    bookmarks: Vec::new(),
+                    distance_spacing: 0.8,
+                    beat_divisor: 4,
+                    grid_size: 32,
+                    timeline_zoom: 3.2,
+                },
+                difficulty: Difficulty::new(),
+            }
+        )
+    }
+}
