@@ -36,6 +36,31 @@ pub enum SampleSet {
 }
 
 #[derive(Debug, PartialEq)]
+pub enum Mode {
+    Osu,
+    Taiko,
+    Catch,
+    Mania,
+}
+
+impl FromStr for Mode {
+    type Err = strum::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().parse::<i32>() {
+            Ok(t) => match t {
+                0 => Ok(Mode::Osu),
+                1 => Ok(Mode::Taiko),
+                2 => Ok(Mode::Catch),
+                3 => Ok(Mode::Mania),
+                _ => Err(VariantNotFound),
+            },
+            Err(_) => Err(VariantNotFound),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq)]
 pub struct General {
     pub audio_filename: String,
     pub audio_lead_in: u32,
@@ -44,7 +69,7 @@ pub struct General {
     pub countdown: Countdown,
     pub sample_set: SampleSet,
     pub stack_leniency: f32,
-    pub mode: u32, // TODO: think about whether this should be an enum
+    pub mode: Mode,
     pub letterbox_in_breaks: bool,
     pub story_fire_in_front: bool,
     pub use_skin_sprites: bool,
@@ -68,7 +93,7 @@ impl General {
             countdown: Countdown::Normal,
             sample_set: SampleSet::Normal,
             stack_leniency: 0.7,
-            mode: 0,
+            mode: Mode::Osu,
             letterbox_in_breaks: false,
             story_fire_in_front: true,
             use_skin_sprites: false,
@@ -94,7 +119,7 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
         "Countdown" => beatmap.general.countdown = Countdown::from_str(v.trim()).unwrap(),
         "SampleSet" => beatmap.general.sample_set = SampleSet::from_str(v.trim()).unwrap(),
         "StackLeniency" => beatmap.general.stack_leniency = v.trim().parse::<f32>().unwrap(),
-        "Mode" => beatmap.general.mode = v.trim().parse::<u32>().unwrap(),
+        "Mode" => beatmap.general.mode = Mode::from_str(v.trim()).unwrap(),
         "LetterboxInBreaks" => {
             beatmap.general.letterbox_in_breaks = v.trim().parse::<u8>().unwrap() != 0
         }
@@ -164,7 +189,7 @@ mod tests {
                     countdown: Countdown::None,
                     sample_set: SampleSet::Drum,
                     stack_leniency: 0.75,
-                    mode: 1,
+                    mode: Mode::Taiko,
                     letterbox_in_breaks: true,
                     story_fire_in_front: false,
                     use_skin_sprites: true,
