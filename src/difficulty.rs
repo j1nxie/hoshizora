@@ -41,7 +41,7 @@ pub fn parse_difficulty(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::General;
+    use crate::{Editor, General};
 
     #[test]
     fn test_parse_difficulty() {
@@ -60,6 +60,7 @@ mod tests {
             beatmap,
             Beatmap {
                 general: General::new(),
+                editor: Editor::new(),
                 difficulty: Difficulty {
                     hp: 6.0,
                     cs: 4.2,

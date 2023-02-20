@@ -1,16 +1,19 @@
 use crate::{
     difficulty::{parse_difficulty, Difficulty},
+    editor::{parse_editor, Editor},
     file_sections::{get_section, FileSections},
     general::{parse_general, General},
 };
 
 mod difficulty;
+mod editor;
 mod file_sections;
 mod general;
 
 #[derive(Debug, PartialEq)]
 pub struct Beatmap {
     pub general: General,
+    pub editor: Editor,
     pub difficulty: Difficulty,
 }
 
@@ -18,6 +21,7 @@ impl Beatmap {
     fn new() -> Beatmap {
         Beatmap {
             general: General::new(),
+            editor: Editor::new(),
             difficulty: Difficulty::new(),
         }
     }
@@ -34,6 +38,7 @@ pub fn parse(text: &str) -> Beatmap {
             } else {
                 match current_section {
                     FileSections::General => parse_general(line, &mut beatmap),
+                    FileSections::Editor => parse_editor(line, &mut beatmap),
                     FileSections::Difficulty => parse_difficulty(line, &mut beatmap),
                     _ => todo!(),
                 }
@@ -71,6 +76,12 @@ mod tests {
             WidescreenStoryboard: 1
             SamplesMatchPlaybackRate: 1
 
+            [Editor]
+            DistanceSpacing: 0.8
+            BeatDivisor: 4
+            GridSize: 32
+            TimelineZoom: 3.2
+
             [Difficulty]
             HPDrainRate:6.0
             CircleSize:4.2
@@ -82,5 +93,7 @@ mod tests {
 
         assert_eq!(beatmap.general.audio_filename, String::from("audio.mp3"));
         assert_eq!(beatmap.difficulty.cs, 4.2);
+        assert_eq!(beatmap.editor.beat_divisor, 4);
+        assert_eq!(beatmap.editor.bookmarks, Vec::new());
     }
 }

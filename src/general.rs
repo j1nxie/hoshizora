@@ -90,7 +90,7 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::Difficulty;
+    use crate::{Difficulty, Editor};
 
     #[test]
     fn test_parse_general() {
@@ -142,6 +142,7 @@ mod tests {
                     widescreen_storyboard: true,
                     samples_match_playback_rate: true,
                 },
+                editor: Editor::new(),
                 difficulty: Difficulty::new(),
             }
         );
