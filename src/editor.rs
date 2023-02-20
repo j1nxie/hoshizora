@@ -20,3 +20,22 @@ impl Editor {
         }
     }
 }
+
+pub fn parse_editor(line: &str, beatmap: &mut Beatmap) {
+    let (k, v) = line.split_once(':').unwrap();
+    match k.trim() {
+        "Bookmarks" => {
+            beatmap.editor.bookmarks = v
+                .trim()
+                .split(',')
+                .map(|x| x.parse::<u32>().unwrap())
+                .collect()
+        }
+        "DistanceSpacing" => beatmap.editor.distance_spacing = v.trim().parse::<f32>().unwrap(),
+        "BeatDivisor" => beatmap.editor.beat_divisor = v.trim().parse::<u8>().unwrap(),
+        "GridSize" => beatmap.editor.grid_size = v.trim().parse::<u8>().unwrap(),
+        "TimelineZoom" => beatmap.editor.timeline_zoom = v.trim().parse::<f32>().unwrap(),
+        _ => {}
+    }
+}
+
