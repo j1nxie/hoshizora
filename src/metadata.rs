@@ -55,16 +55,16 @@ mod tests {
 
     #[test]
     fn test_parse_metadata() {
-        let test_str = "Title: End Time
-        TitleUnicode:End Time
-        Artist:Cres
-        ArtistUnicode:Cres
-        Creator:PaRaDogi
-        Version:Dogi
-        Source:
-        Tags:DeviousPanda
-        BeatmapID:2797865
-        BeatmapSetID:1351450";
+        let test_str = "Title:End Time
+            TitleUnicode:End Time
+            Artist:Cres
+            ArtistUnicode:Cres
+            Creator:PaRaDogi
+            Version:Dogi
+            Source:
+            Tags:DeviousPanda
+            BeatmapID:2797865
+            BeatmapSetID:1351450";
         let mut beatmap = Beatmap::new();
         for line in test_str.lines() {
             parse_metadata(line, &mut beatmap);
