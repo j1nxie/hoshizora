@@ -1,6 +1,7 @@
 use crate::Beatmap;
 use std::str::FromStr;
 use strum::ParseError::VariantNotFound;
+use strum_macros::EnumString;
 
 #[derive(Debug, PartialEq)]
 pub enum Countdown {
@@ -27,6 +28,13 @@ impl FromStr for Countdown {
     }
 }
 
+#[derive(Debug, PartialEq, EnumString)]
+pub enum SampleSet {
+    Normal,
+    Soft,
+    Drum,
+}
+
 #[derive(Debug, PartialEq)]
 pub struct General {
     pub audio_filename: String,
@@ -34,7 +42,7 @@ pub struct General {
     pub audio_hash: String,
     pub preview_time: i32,
     pub countdown: Countdown,
-    pub sample_set: String, // TODO: this should also be an enum
+    pub sample_set: SampleSet,
     pub stack_leniency: f32,
     pub mode: u32, // TODO: think about whether this should be an enum
     pub letterbox_in_breaks: bool,
@@ -58,7 +66,7 @@ impl General {
             audio_hash: String::new(),
             preview_time: -1,
             countdown: Countdown::Normal,
-            sample_set: String::from("Normal"),
+            sample_set: SampleSet::Normal,
             stack_leniency: 0.7,
             mode: 0,
             letterbox_in_breaks: false,
@@ -84,7 +92,7 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
         "AudioHash" => beatmap.general.audio_hash = String::from(v.trim()),
         "PreviewTime" => beatmap.general.preview_time = v.trim().parse::<i32>().unwrap(),
         "Countdown" => beatmap.general.countdown = Countdown::from_str(v.trim()).unwrap(),
-        "SampleSet" => beatmap.general.sample_set = String::from(v.trim()),
+        "SampleSet" => beatmap.general.sample_set = SampleSet::from_str(v.trim()).unwrap(),
         "StackLeniency" => beatmap.general.stack_leniency = v.trim().parse::<f32>().unwrap(),
         "Mode" => beatmap.general.mode = v.trim().parse::<u32>().unwrap(),
         "LetterboxInBreaks" => {
@@ -154,7 +162,7 @@ mod tests {
                     audio_hash: String::from("afjskldfjaldksfjklasf"),
                     preview_time: 10,
                     countdown: Countdown::None,
-                    sample_set: String::from("Drum"),
+                    sample_set: SampleSet::Drum,
                     stack_leniency: 0.75,
                     mode: 1,
                     letterbox_in_breaks: true,
