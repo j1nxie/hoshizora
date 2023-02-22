@@ -91,8 +91,8 @@ pub struct General {
 }
 
 impl General {
-    pub fn new() -> General {
-        General {
+    pub fn new() -> Self {
+        Self {
             audio_filename: String::new(),
             audio_lead_in: 0,
             audio_hash: String::new(),
@@ -113,6 +113,12 @@ impl General {
             widescreen_storyboard: false,
             samples_match_playback_rate: false,
         }
+    }
+}
+
+impl Default for General {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

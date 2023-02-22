@@ -73,8 +73,8 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
-                general: General::new(),
                 editor: Editor::new(),
+                general: General::default(),
                 metadata: Metadata {
                     title: String::from("End Time"),
                     title_unicode: String::from("End Time"),

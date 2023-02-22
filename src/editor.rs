@@ -58,7 +58,7 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
-                general: General::new(),
+                general: General::default(),
                 editor: Editor {
                     bookmarks: Vec::new(),
                     distance_spacing: 0.8,
