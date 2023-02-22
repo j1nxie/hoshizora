@@ -67,7 +67,7 @@ mod tests {
                     timeline_zoom: 3.2,
                 },
                 metadata: Metadata::new(),
-                difficulty: Difficulty::new(),
+                difficulty: Difficulty::default(),
             }
         )
     }

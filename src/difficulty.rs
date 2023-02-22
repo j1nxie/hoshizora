@@ -11,14 +11,34 @@ pub struct Difficulty {
 }
 
 impl Difficulty {
-    pub fn new() -> Difficulty {
-        Difficulty {
+    pub fn new(
+        hp: f32,
+        cs: f32,
+        od: f32,
+        ar: f32,
+        slider_multiplier: f32,
+        slider_tickrate: f32,
+    ) -> Self {
+        Self {
+            hp,
+            cs,
+            od,
+            ar,
+            slider_multiplier,
+            slider_tickrate,
+        }
+    }
+}
+
+impl Default for Difficulty {
+    fn default() -> Self {
+        Self {
             hp: 5.0,
             cs: 5.0,
             od: 5.0,
             ar: 5.0,
-            slider_multiplier: 1.4,
-            slider_tickrate: 1.0,
+            slider_multiplier: 1.0,
+            slider_tickrate: 1.4,
         }
     }
 }

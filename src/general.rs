@@ -214,6 +214,7 @@ mod tests {
                 editor: Editor::new(),
                 metadata: Metadata::new(),
                 difficulty: Difficulty::new(),
+                difficulty: Difficulty::default(),
             }
         );
     }

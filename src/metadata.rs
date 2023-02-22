@@ -87,7 +87,7 @@ mod tests {
                     beatmap_id: 2797865,
                     beatmap_set_id: 1351450,
                 },
-                difficulty: Difficulty::new(),
+                difficulty: Difficulty::default(),
             }
         );
     }
