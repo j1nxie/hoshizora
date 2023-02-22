@@ -53,7 +53,7 @@ pub fn parse_metadata(line: &str, beatmap: &mut Beatmap) {
         "Creator" => beatmap.metadata.creator = String::from(v.trim()),
         "Version" => beatmap.metadata.version = String::from(v.trim()),
         "Source" => beatmap.metadata.source = String::from(v.trim()),
-        "Tags" => beatmap.metadata.tags = v.trim().split(' ').map(|x| String::from(x)).collect(),
+        "Tags" => beatmap.metadata.tags = v.trim().split(' ').map(String::from).collect(),
         "BeatmapID" => beatmap.metadata.beatmap_id = v.trim().parse::<u32>().unwrap(),
         "BeatmapSetID" => beatmap.metadata.beatmap_set_id = v.trim().parse::<u32>().unwrap(),
         _ => {}
