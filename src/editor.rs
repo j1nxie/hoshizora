@@ -10,8 +10,26 @@ pub struct Editor {
 }
 
 impl Editor {
-    pub fn new() -> Editor {
-        Editor {
+    pub fn new(
+        bookmarks: Vec<u32>,
+        distance_spacing: f32,
+        beat_divisor: u8,
+        grid_size: u8,
+        timeline_zoom: f32,
+    ) -> Self {
+        Self {
+            bookmarks,
+            distance_spacing,
+            beat_divisor,
+            grid_size,
+            timeline_zoom,
+        }
+    }
+}
+
+impl Default for Editor {
+    fn default() -> Self {
+        Self {
             bookmarks: Vec::new(),
             distance_spacing: 1.0,
             beat_divisor: 4,

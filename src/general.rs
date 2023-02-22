@@ -217,9 +217,8 @@ mod tests {
                     widescreen_storyboard: true,
                     samples_match_playback_rate: true,
                 },
-                editor: Editor::new(),
                 metadata: Metadata::new(),
-                difficulty: Difficulty::new(),
+                editor: Editor::default(),
                 difficulty: Difficulty::default(),
             }
         );
