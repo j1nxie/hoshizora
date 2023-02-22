@@ -79,9 +79,9 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
-                metadata: Metadata::new(),
                 general: General::default(),
                 editor: Editor::default(),
+                metadata: Metadata::default(),
                 difficulty: Difficulty {
                     hp: 6.0,
                     cs: 4.2,

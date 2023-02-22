@@ -84,7 +84,7 @@ mod tests {
                     grid_size: 32,
                     timeline_zoom: 3.2,
                 },
-                metadata: Metadata::new(),
+                metadata: Metadata::default(),
                 difficulty: Difficulty::default(),
             }
         )
