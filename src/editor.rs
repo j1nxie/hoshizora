@@ -10,8 +10,26 @@ pub struct Editor {
 }
 
 impl Editor {
-    pub fn new() -> Editor {
-        Editor {
+    pub fn new(
+        bookmarks: Vec<u32>,
+        distance_spacing: f32,
+        beat_divisor: u8,
+        grid_size: u8,
+        timeline_zoom: f32,
+    ) -> Self {
+        Self {
+            bookmarks,
+            distance_spacing,
+            beat_divisor,
+            grid_size,
+            timeline_zoom,
+        }
+    }
+}
+
+impl Default for Editor {
+    fn default() -> Self {
+        Self {
             bookmarks: Vec::new(),
             distance_spacing: 1.0,
             beat_divisor: 4,
@@ -50,7 +68,7 @@ mod tests {
         BeatDivisor: 4
         GridSize: 32
         TimelineZoom: 3.2";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_editor(line, &mut beatmap);
         }
@@ -58,7 +76,7 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
-                general: General::new(),
+                general: General::default(),
                 editor: Editor {
                     bookmarks: Vec::new(),
                     distance_spacing: 0.8,
@@ -66,8 +84,8 @@ mod tests {
                     grid_size: 32,
                     timeline_zoom: 3.2,
                 },
-                metadata: Metadata::new(),
-                difficulty: Difficulty::new(),
+                metadata: Metadata::default(),
+                difficulty: Difficulty::default(),
             }
         )
     }

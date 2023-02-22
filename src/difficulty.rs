@@ -11,14 +11,34 @@ pub struct Difficulty {
 }
 
 impl Difficulty {
-    pub fn new() -> Difficulty {
-        Difficulty {
+    pub fn new(
+        hp: f32,
+        cs: f32,
+        od: f32,
+        ar: f32,
+        slider_multiplier: f32,
+        slider_tickrate: f32,
+    ) -> Self {
+        Self {
+            hp,
+            cs,
+            od,
+            ar,
+            slider_multiplier,
+            slider_tickrate,
+        }
+    }
+}
+
+impl Default for Difficulty {
+    fn default() -> Self {
+        Self {
             hp: 5.0,
             cs: 5.0,
             od: 5.0,
             ar: 5.0,
-            slider_multiplier: 1.4,
-            slider_tickrate: 1.0,
+            slider_multiplier: 1.0,
+            slider_tickrate: 1.4,
         }
     }
 }
@@ -51,7 +71,7 @@ mod tests {
             ApproachRate:9.8
             SliderMultiplier:1.4
             SliderTickRate:2.0";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_difficulty(line, &mut beatmap);
         }
@@ -59,9 +79,9 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
-                general: General::new(),
-                editor: Editor::new(),
-                metadata: Metadata::new(),
+                general: General::default(),
+                editor: Editor::default(),
+                metadata: Metadata::default(),
                 difficulty: Difficulty {
                     hp: 6.0,
                     cs: 4.2,

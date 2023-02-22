@@ -91,8 +91,8 @@ pub struct General {
 }
 
 impl General {
-    pub fn new() -> General {
-        General {
+    pub fn new() -> Self {
+        Self {
             audio_filename: String::new(),
             audio_lead_in: 0,
             audio_hash: String::new(),
@@ -113,6 +113,12 @@ impl General {
             widescreen_storyboard: false,
             samples_match_playback_rate: false,
         }
+    }
+}
+
+impl Default for General {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -182,7 +188,7 @@ mod tests {
             SpecialStyle: 1
             WidescreenStoryboard: 1
             SamplesMatchPlaybackRate: 1";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_general(line, &mut beatmap)
         }
@@ -211,9 +217,9 @@ mod tests {
                     widescreen_storyboard: true,
                     samples_match_playback_rate: true,
                 },
-                editor: Editor::new(),
-                metadata: Metadata::new(),
-                difficulty: Difficulty::new(),
+                editor: Editor::default(),
+                metadata: Metadata::default(),
+                difficulty: Difficulty::default(),
             }
         );
     }

@@ -1,6 +1,6 @@
 use crate::Beatmap;
 
-#[derive(Debug, PartialEq)]
+#[derive(Default, Debug, PartialEq)]
 pub struct Metadata {
     pub title: String,
     pub title_unicode: String,
@@ -14,19 +14,31 @@ pub struct Metadata {
     pub beatmap_set_id: u32,
 }
 
+#[allow(clippy::too_many_arguments)]
 impl Metadata {
-    pub fn new() -> Metadata {
-        Metadata {
-            title: String::new(),
-            title_unicode: String::new(),
-            artist: String::new(),
-            artist_unicode: String::new(),
-            creator: String::new(),
-            version: String::new(),
-            source: String::new(),
-            tags: Vec::new(),
-            beatmap_id: 0,
-            beatmap_set_id: 0,
+    pub fn new(
+        title: String,
+        title_unicode: String,
+        artist: String,
+        artist_unicode: String,
+        creator: String,
+        version: String,
+        source: String,
+        tags: Vec<String>,
+        beatmap_id: u32,
+        beatmap_set_id: u32,
+    ) -> Self {
+        Self {
+            title,
+            title_unicode,
+            artist,
+            artist_unicode,
+            creator,
+            version,
+            source,
+            tags,
+            beatmap_id,
+            beatmap_set_id,
         }
     }
 }
@@ -41,7 +53,7 @@ pub fn parse_metadata(line: &str, beatmap: &mut Beatmap) {
         "Creator" => beatmap.metadata.creator = String::from(v.trim()),
         "Version" => beatmap.metadata.version = String::from(v.trim()),
         "Source" => beatmap.metadata.source = String::from(v.trim()),
-        "Tags" => beatmap.metadata.tags = v.trim().split(' ').map(|x| String::from(x)).collect(),
+        "Tags" => beatmap.metadata.tags = v.trim().split(' ').map(String::from).collect(),
         "BeatmapID" => beatmap.metadata.beatmap_id = v.trim().parse::<u32>().unwrap(),
         "BeatmapSetID" => beatmap.metadata.beatmap_set_id = v.trim().parse::<u32>().unwrap(),
         _ => {}
@@ -65,7 +77,7 @@ mod tests {
             Tags:DeviousPanda
             BeatmapID:2797865
             BeatmapSetID:1351450";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_metadata(line, &mut beatmap);
         }
@@ -73,8 +85,8 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
-                general: General::new(),
-                editor: Editor::new(),
+                general: General::default(),
+                editor: Editor::default(),
                 metadata: Metadata {
                     title: String::from("End Time"),
                     title_unicode: String::from("End Time"),
@@ -87,7 +99,7 @@ mod tests {
                     beatmap_id: 2797865,
                     beatmap_set_id: 1351450,
                 },
-                difficulty: Difficulty::new(),
+                difficulty: Difficulty::default(),
             }
         );
     }
