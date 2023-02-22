@@ -71,7 +71,7 @@ mod tests {
             ApproachRate:9.8
             SliderMultiplier:1.4
             SliderTickRate:2.0";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_difficulty(line, &mut beatmap);
         }

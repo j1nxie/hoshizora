@@ -188,7 +188,7 @@ mod tests {
             SpecialStyle: 1
             WidescreenStoryboard: 1
             SamplesMatchPlaybackRate: 1";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_general(line, &mut beatmap)
         }

@@ -68,7 +68,7 @@ mod tests {
         BeatDivisor: 4
         GridSize: 32
         TimelineZoom: 3.2";
-        let mut beatmap = Beatmap::new();
+        let mut beatmap = Beatmap::default();
         for line in test_str.lines() {
             parse_editor(line, &mut beatmap);
         }

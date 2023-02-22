@@ -12,7 +12,7 @@ mod file_sections;
 mod general;
 mod metadata;
 
-#[derive(Debug, PartialEq)]
+#[derive(Default, Debug, PartialEq)]
 pub struct Beatmap {
     pub general: General,
     pub editor: Editor,
@@ -20,19 +20,25 @@ pub struct Beatmap {
     pub difficulty: Difficulty,
 }
 
+#[allow(dead_code)]
 impl Beatmap {
-    fn new() -> Beatmap {
-        Beatmap {
-            general: General::new(),
-            editor: Editor::new(),
-            metadata: Metadata::new(),
-            difficulty: Difficulty::new(),
+    pub fn new(
+        general: General,
+        editor: Editor,
+        metadata: Metadata,
+        difficulty: Difficulty,
+    ) -> Self {
+        Self {
+            general,
+            editor,
+            metadata,
+            difficulty,
         }
     }
 }
 
 pub fn parse(text: &str) -> Beatmap {
-    let mut beatmap = Beatmap::new();
+    let mut beatmap = Beatmap::default();
     let mut current_section = FileSections::None;
 
     for line in text.lines() {
