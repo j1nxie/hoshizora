@@ -84,3 +84,29 @@ pub fn parse_timing_points(line: &str, beatmap: &mut Beatmap) {
     beatmap.timing_points.push(timing_point)
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_timing_points() {
+        let test_str = "1342, 333.33, 4, 2, 1, 35, 1, 0";
+        let mut beatmap = Beatmap::default();
+        parse_timing_points(test_str, &mut beatmap);
+
+        assert_eq!(beatmap.timing_points.len(), 1);
+        assert_eq!(
+            beatmap.timing_points[0],
+            TimingPoint {
+                time: 1342,
+                beat_length: 333.33,
+                meter: 4,
+                sample_set: SampleSet::Soft,
+                sample_index: 1,
+                volume: 35,
+                uninherited: true,
+                effects: Effects::None,
+            }
+        );
+    }
+}
