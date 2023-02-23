@@ -28,11 +28,26 @@ impl FromStr for Countdown {
     }
 }
 
-#[derive(Debug, PartialEq, EnumString)]
+#[derive(Debug, PartialEq)]
 pub enum SampleSet {
+    Default,
     Normal,
     Soft,
     Drum,
+}
+
+impl FromStr for SampleSet {
+    type Err = strum::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim() {
+            "0" => Ok(Self::Default),
+            "1" | "Normal" => Ok(Self::Default),
+            "2" | "Soft" => Ok(Self::Soft),
+            "3" | "Drum" => Ok(Self::Drum),
+            _ => Err(VariantNotFound),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
