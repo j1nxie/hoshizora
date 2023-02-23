@@ -67,3 +67,20 @@ impl Default for TimingPoint {
     }
 }
 
+pub fn parse_timing_points(line: &str, beatmap: &mut Beatmap) {
+    let params: Vec<&str> = line.split(',').map(|x| x.trim()).collect();
+
+    let timing_point = TimingPoint {
+        time: params[0].parse::<u32>().unwrap(),
+        beat_length: params[1].parse::<f32>().unwrap(),
+        meter: params[2].parse::<u32>().unwrap(),
+        sample_set: SampleSet::from_str(params[3]).unwrap(),
+        sample_index: params[4].parse::<u32>().unwrap(),
+        volume: params[5].parse::<u32>().unwrap(),
+        uninherited: params[6].parse::<u8>().unwrap() != 0,
+        effects: Effects::from_str(params[7]).unwrap(),
+    };
+
+    beatmap.timing_points.push(timing_point)
+}
+

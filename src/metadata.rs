@@ -100,6 +100,7 @@ mod tests {
                     beatmap_set_id: 1351450,
                 },
                 difficulty: Difficulty::default(),
+                timing_points: Vec::new(),
             }
         );
     }

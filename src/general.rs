@@ -220,6 +220,7 @@ mod tests {
                 editor: Editor::default(),
                 metadata: Metadata::default(),
                 difficulty: Difficulty::default(),
+                timing_points: Vec::new(),
             }
         );
     }

@@ -89,7 +89,8 @@ mod tests {
                     ar: 9.8,
                     slider_multiplier: 1.4,
                     slider_tickrate: 2.0,
-                }
+                },
+                timing_points: Vec::new(),
             }
         );
     }
