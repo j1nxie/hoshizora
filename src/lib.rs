@@ -1,7 +1,7 @@
 use crate::{
     difficulty::{parse_difficulty, Difficulty},
     editor::{parse_editor, Editor},
-    file_sections::{get_section, FileSections},
+    file_sections::FileSections,
     general::{parse_general, General},
     metadata::{parse_metadata, Metadata},
     timing_points::{parse_timing_points, TimingPoint},
@@ -48,8 +48,8 @@ pub fn parse(text: &str) -> Beatmap {
 
     for line in text.lines() {
         if !line.trim().is_empty() && !line.starts_with("//") {
-            if get_section(line) != FileSections::None {
-                current_section = get_section(line);
+            if FileSections::get_section(line) != FileSections::None {
+                current_section = FileSections::get_section(line);
             } else {
                 match current_section {
                     FileSections::General => parse_general(line, &mut beatmap),
