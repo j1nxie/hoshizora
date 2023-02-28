@@ -4,12 +4,12 @@ an [osu!](https://osu.ppy.sh) beatmap parser.
 
 ## features list
 
-- [ ] General
-- [ ] Editor
-- [ ] Metadata
+- [x] General
+- [x] Editor
+- [x] Metadata
 - [x] Difficulty
 - [ ] Events
-- [ ] TimingPoints
+- [x] TimingPoints
 - [ ] Colours
 - [ ] HitObjects
 	
