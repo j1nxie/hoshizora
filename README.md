@@ -11,7 +11,7 @@ an [osu!](https://osu.ppy.sh) beatmap parser.
 - [ ] Events
 - [x] TimingPoints
 - [ ] Colours
-- [ ] HitObjects
+- [x] HitObjects
 	
 ## license
 
