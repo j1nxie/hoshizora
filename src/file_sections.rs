@@ -17,6 +17,9 @@ pub enum FileSections {
 
 impl FileSections {
     pub fn get_section(line: &str) -> Self {
+        if line.starts_with("osu file format") {
+            return FileSections::Format;
+        }
         let trimmed_line = line.trim().trim_start_matches('[').trim_end_matches(']');
         match Self::from_str(trimmed_line) {
             Ok(t) => t,

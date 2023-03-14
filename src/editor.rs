@@ -60,7 +60,7 @@ pub fn parse_editor(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, General, Metadata};
+    use crate::{Difficulty, Format, General, Metadata};
 
     #[test]
     fn test_parse_editor() {
@@ -76,6 +76,7 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
+                format: Format::default(),
                 general: General::default(),
                 editor: Editor {
                     bookmarks: Vec::new(),

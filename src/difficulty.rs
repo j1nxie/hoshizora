@@ -61,7 +61,7 @@ pub fn parse_difficulty(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Editor, General, Metadata};
+    use crate::{Editor, Format, General, Metadata};
 
     #[test]
     fn test_parse_difficulty() {
@@ -79,6 +79,7 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
+                format: Format::default(),
                 general: General::default(),
                 editor: Editor::default(),
                 metadata: Metadata::default(),

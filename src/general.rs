@@ -180,7 +180,7 @@ pub fn parse_general(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, Editor, Metadata};
+    use crate::{Difficulty, Editor, Format, Metadata};
 
     #[test]
     fn test_parse_general() {
@@ -211,6 +211,7 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
+                format: Format::default(),
                 general: General {
                     audio_filename: String::from("audio.mp3"),
                     audio_lead_in: 0,

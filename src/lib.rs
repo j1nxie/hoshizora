@@ -2,6 +2,7 @@ use crate::{
     difficulty::{parse_difficulty, Difficulty},
     editor::{parse_editor, Editor},
     file_sections::FileSections,
+    format::{parse_format, Format},
     general::{parse_general, General},
     hit_objects::{parse_hit_objects, HitObject},
     metadata::{parse_metadata, Metadata},
@@ -11,6 +12,7 @@ use crate::{
 mod difficulty;
 mod editor;
 mod file_sections;
+mod format;
 mod general;
 mod hit_objects;
 mod metadata;
@@ -18,6 +20,7 @@ mod timing_points;
 
 #[derive(Default, Debug, PartialEq)]
 pub struct Beatmap {
+    pub format: Format,
     pub general: General,
     pub editor: Editor,
     pub metadata: Metadata,
@@ -29,6 +32,7 @@ pub struct Beatmap {
 #[allow(dead_code)]
 impl Beatmap {
     pub fn new(
+        format: Format,
         general: General,
         editor: Editor,
         metadata: Metadata,
@@ -37,6 +41,7 @@ impl Beatmap {
         hit_objects: Vec<HitObject>,
     ) -> Self {
         Self {
+            format,
             general,
             editor,
             metadata,
@@ -57,13 +62,14 @@ pub fn parse(text: &str) -> Beatmap {
                 current_section = FileSections::get_section(line);
             } else {
                 match current_section {
+                    FileSections::Format => parse_format(line, &mut beatmap),
                     FileSections::General => parse_general(line, &mut beatmap),
                     FileSections::Editor => parse_editor(line, &mut beatmap),
                     FileSections::Difficulty => parse_difficulty(line, &mut beatmap),
                     FileSections::Metadata => parse_metadata(line, &mut beatmap),
                     FileSections::TimingPoints => parse_timing_points(line, &mut beatmap),
                     FileSections::HitObjects => parse_hit_objects(line, &mut beatmap),
-                    _ => todo!(),
+                    _ => {}
                 }
             }
         }

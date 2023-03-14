@@ -63,7 +63,7 @@ pub fn parse_metadata(line: &str, beatmap: &mut Beatmap) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, Editor, General};
+    use crate::{Difficulty, Editor, Format, General};
 
     #[test]
     fn test_parse_metadata() {
@@ -85,6 +85,7 @@ mod tests {
         assert_eq!(
             beatmap,
             Beatmap {
+                format: Format::default(),
                 general: General::default(),
                 editor: Editor::default(),
                 metadata: Metadata {
