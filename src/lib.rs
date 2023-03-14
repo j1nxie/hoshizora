@@ -3,6 +3,7 @@ use crate::{
     editor::{parse_editor, Editor},
     file_sections::FileSections,
     general::{parse_general, General},
+    hit_objects::{parse_hit_objects, HitObject},
     metadata::{parse_metadata, Metadata},
     timing_points::{parse_timing_points, TimingPoint},
 };
@@ -11,6 +12,7 @@ mod difficulty;
 mod editor;
 mod file_sections;
 mod general;
+mod hit_objects;
 mod metadata;
 mod timing_points;
 
@@ -21,6 +23,7 @@ pub struct Beatmap {
     pub metadata: Metadata,
     pub difficulty: Difficulty,
     pub timing_points: Vec<TimingPoint>,
+    pub hit_objects: Vec<HitObject>,
 }
 
 #[allow(dead_code)]
@@ -31,6 +34,7 @@ impl Beatmap {
         metadata: Metadata,
         difficulty: Difficulty,
         timing_points: Vec<TimingPoint>,
+        hit_objects: Vec<HitObject>,
     ) -> Self {
         Self {
             general,
@@ -38,6 +42,7 @@ impl Beatmap {
             metadata,
             difficulty,
             timing_points,
+            hit_objects,
         }
     }
 }
@@ -57,6 +62,7 @@ pub fn parse(text: &str) -> Beatmap {
                     FileSections::Difficulty => parse_difficulty(line, &mut beatmap),
                     FileSections::Metadata => parse_metadata(line, &mut beatmap),
                     FileSections::TimingPoints => parse_timing_points(line, &mut beatmap),
+                    FileSections::HitObjects => parse_hit_objects(line, &mut beatmap),
                     _ => todo!(),
                 }
             }
