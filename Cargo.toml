@@ -1,2 +1,2 @@
 [workspace]
-members = ["hoshizora-parser"]
+members = ["hoshizora-parser", "hoshizora-memory-reader"]
