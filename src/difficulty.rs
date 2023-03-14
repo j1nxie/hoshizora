@@ -91,6 +91,7 @@ mod tests {
                     slider_tickrate: 2.0,
                 },
                 timing_points: Vec::new(),
+                hit_objects: Vec::new(),
             }
         );
     }

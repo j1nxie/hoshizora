@@ -101,6 +101,7 @@ mod tests {
                 },
                 difficulty: Difficulty::default(),
                 timing_points: Vec::new(),
+                hit_objects: Vec::new(),
             }
         );
     }

@@ -3,6 +3,7 @@ use crate::{
     editor::{parse_editor, Editor},
     file_sections::FileSections,
     general::{parse_general, General},
+    hit_objects::{parse_hit_objects, HitObject},
     metadata::{parse_metadata, Metadata},
     timing_points::{parse_timing_points, TimingPoint},
 };
@@ -11,6 +12,7 @@ mod difficulty;
 mod editor;
 mod file_sections;
 mod general;
+mod hit_objects;
 mod metadata;
 mod timing_points;
 
@@ -21,6 +23,7 @@ pub struct Beatmap {
     pub metadata: Metadata,
     pub difficulty: Difficulty,
     pub timing_points: Vec<TimingPoint>,
+    pub hit_objects: Vec<HitObject>,
 }
 
 #[allow(dead_code)]
@@ -31,6 +34,7 @@ impl Beatmap {
         metadata: Metadata,
         difficulty: Difficulty,
         timing_points: Vec<TimingPoint>,
+        hit_objects: Vec<HitObject>,
     ) -> Self {
         Self {
             general,
@@ -38,6 +42,7 @@ impl Beatmap {
             metadata,
             difficulty,
             timing_points,
+            hit_objects,
         }
     }
 }
@@ -57,6 +62,7 @@ pub fn parse(text: &str) -> Beatmap {
                     FileSections::Difficulty => parse_difficulty(line, &mut beatmap),
                     FileSections::Metadata => parse_metadata(line, &mut beatmap),
                     FileSections::TimingPoints => parse_timing_points(line, &mut beatmap),
+                    FileSections::HitObjects => parse_hit_objects(line, &mut beatmap),
                     _ => todo!(),
                 }
             }
@@ -69,6 +75,7 @@ pub fn parse(text: &str) -> Beatmap {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::hit_objects::{HitCircle, HitSample};
 
     #[test]
     fn test_parse() {
@@ -117,7 +124,12 @@ mod tests {
             OverallDifficulty:8.5
             ApproachRate:9.8
             SliderMultiplier:1.4
-            SliderTickRate:2.0";
+            SliderTickRate:2.0
+
+            [HitObjects]
+            256,192,11000,21,2
+            256,192,11200,8,12,12000,3:0:0:80:
+            100,100,12600,6,1,B|200:200|250:200|250:200|300:150,2,310.123,2|1|2,0:0|0:0|0:2,0:0:0:0:";
         let beatmap = parse(test_str);
 
         assert_eq!(beatmap.general.audio_filename, String::from("audio.mp3"));
@@ -125,5 +137,17 @@ mod tests {
         assert_eq!(beatmap.metadata.title, String::from("End Time"));
         assert_eq!(beatmap.editor.beat_divisor, 4);
         assert_eq!(beatmap.editor.bookmarks, Vec::new());
+        assert_eq!(
+            beatmap.hit_objects[0],
+            HitObject::HitCircle(HitCircle {
+                position_x: 256,
+                position_y: 192,
+                new_combo: true,
+                color_skip: 1,
+                time: 11000,
+                hitsound: 2,
+                hit_sample: HitSample::default(),
+            })
+        );
     }
 }
