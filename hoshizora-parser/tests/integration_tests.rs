@@ -1,4 +1,4 @@
-use hoshizora_parser::{parse, Beatmap};
+use hoshizora_parser::parse;
 use std::{
     fs::File,
     io::{prelude::*, BufReader},
