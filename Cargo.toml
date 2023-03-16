@@ -1,2 +1,9 @@
 [workspace]
 members = ["hoshizora-parser", "hoshizora-memory-reader"]
+
+[workspace.package]
+authors = ["j1nxie"]
+edition = "2021"
+include = ["src/**/*.rs", "README.md"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/j1nxie/hoshizora"
